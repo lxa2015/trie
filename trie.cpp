@@ -21,27 +21,26 @@ typedef stringsurrogate CSS;
 #include "MorphemeCollection.h"
 #include "WordCollection.h"
 #include "CompareFunc.h"
- 
- 
-*/
-// trie
-/////////////////////////////////////////////////////////////
- 
-trie::trie(bool ReverseFlag)
-	:m_Root(new CNode()),
-	m_NodeArray(NULL),
-	m_ReverseFlag(ReverseFlag),
-	m_AutoDelete(true),
-	m_Count(0),
-	m_NumberOfNodes(1),
-	m_TrieHasChangedFlag(true),
-	//m_TotalUseCount(0),
-	m_IsAlphabetized(false) { 
-	std::cout << "making a trie " << this << " "<<m_Count <<std::endl;
-	}
- 
+ */
 
- 
+// trie
+
+trie::trie(bool ReverseFlag)
+:m_Root(new CNode()),
+m_NodeArray(NULL),
+m_ReverseFlag(ReverseFlag),
+m_AutoDelete(true),
+m_Count(0),
+m_NumberOfNodes(1),
+m_TrieHasChangedFlag(true),
+//m_TotalUseCount(0),
+m_IsAlphabetized(false) { 
+	// std::cout << "making a trie" <<m_Count <<std::endl;
+	// std::cout << "m_Root at  " << m_Root <<m_Count <<std::endl;
+}
+
+
+
 trie::~trie()
 {
 	std::cout<<"destroying a trie"<<std::endl;
@@ -65,8 +64,8 @@ CNode* trie::operator<< ( stringsurrogate ssS )
 	return TrieInsert(ssS);
 }
 
- 
- 
+
+
 //----------------------------------------------------------------
 ////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
@@ -75,35 +74,35 @@ CNode* trie::operator<< ( stringsurrogate ssS )
 
 CNode* trie::TrieInsert( stringsurrogate ssS, int* pResult )
 {
-  CNode* pNode = NULL;
-   m_Root->NodeInsert(ssS, m_NumberOfNodes, &pNode, pResult);
-   if ( pResult && *pResult == 1 )
-  {
-    m_Count++;
-  }
+	CNode* pNode = NULL;
+	m_Root->NodeInsert(ssS, m_NumberOfNodes, &pNode, pResult);
+	if ( pResult && *pResult == 1 )
+	{
+		m_Count++;
+	}
 
-  m_TrieHasChangedFlag  = true;
-  m_IsAlphabetized    = false;
+	m_TrieHasChangedFlag  = true;
+	m_IsAlphabetized    = false;
 
-  return pNode;
+	return pNode;
 }
 
 CNode* trie::TrieInsert(stringsurrogate ssS)
 {
-  int Result        = 0;
-  int* pResult      = &Result;
-  CNode* pNode      = NULL;
+	int Result        = 0;
+	int* pResult      = &Result;
+	CNode* pNode      = NULL;
 
-  m_Root->NodeInsert(ssS, m_NumberOfNodes, &pNode, pResult);
-  if ( pResult && *pResult == 1 )
-  {
-    m_Count++;
-  }
+	m_Root->NodeInsert(ssS, m_NumberOfNodes, &pNode, pResult);
+	if ( pResult && *pResult == 1 )
+	{
+		m_Count++;
+	}
 
-  m_TrieHasChangedFlag  = true;
-  m_IsAlphabetized    = false;
+	m_TrieHasChangedFlag  = true;
+	m_IsAlphabetized    = false;
 
-  return pNode;
+	return pNode;
 }
 
 
@@ -115,10 +114,10 @@ CNode* trie::TrieInsert(stringsurrogate ssS)
 
 void trie::MakeATerminalPointerArray( CNode** Array )
 {
-  int Index = 0;
+	int Index = 0;
 
-  m_Root->MakeATerminalPointerArray( Array, Index );
-  assert ( (int) Index == m_Count );
+	m_Root->MakeATerminalPointerArray( Array, Index );
+	assert ( (int) Index == m_Count );
 
 }
 
@@ -133,8 +132,8 @@ int trie::CountValidSubstrings( stringsurrogate ss )
 
 CNode*    trie::Find1 ( stringsurrogate SS, bool PartialOK )
 {
-  CNode* pNode = m_Root->Find1(SS, PartialOK);
-  return pNode;
+	CNode* pNode = m_Root->Find1(SS, PartialOK);
+	return pNode;
 }
 //----------------------------------------------------------------
 ////////////////////////////////////////////////////////////////
@@ -142,72 +141,72 @@ CNode*    trie::Find1 ( stringsurrogate SS, bool PartialOK )
 //
 //      Remove
 /*
-bool   trie::RemoveFromTrie ( const stringsurrogate string, bool RemovePointerFlag )
-{
-  CNode*  pNode         = m_Root;
-  CNode*  qNode         = NULL;
-  m_TrieHasChangedFlag  = true;
-  while ( pNode )   {
-    for (int i = pNode->m_StartPoint + 1; i < pNode->m_BreakPoint; i++ )     {
-      if ( string[i] != pNode->m_Key [i] )       {
-        return false;
-      }
-    }
-    char c             = string [ pNode->m_BreakPoint ];
-    qNode               = pNode->FindLetter( c );
-    if ( qNode == NULL )     {
-      return false;
-    }
-    if (qNode->GetKey() == string )        {
-        assert ( qNode->m_Pointer );
-        qNode->m_ExistenceFlag = false;
-	  
-        if ( RemovePointerFlag && m_AutoDelete )   {
-            delete qNode->m_Pointer;
-        }
-        qNode->m_Pointer = NULL;
+ bool   trie::RemoveFromTrie ( const stringsurrogate string, bool RemovePointerFlag )
+ {
+	 CNode*  pNode         = m_Root;
+	 CNode*  qNode         = NULL;
+	 m_TrieHasChangedFlag  = true;
+	 while ( pNode )   {
+		 for (int i = pNode->m_StartPoint + 1; i < pNode->m_BreakPoint; i++ )     {
+			 if ( string[i] != pNode->m_Key [i] )       {
+				 return false;
+				 }
+				 }
+				 char c             = string [ pNode->m_BreakPoint ];
+				 qNode               = pNode->FindLetter( c );
+				 if ( qNode == NULL )     {
+					 return false;
+					 }
+					 if (qNode->GetKey() == string )        {
+						 assert ( qNode->m_Pointer );
+						 qNode->m_ExistenceFlag = false;
 
-        if ( qNode->m_Letters == NULL )       {
-            delete qNode;
-            m_NumberOfNodes--;
+						 if ( RemovePointerFlag && m_AutoDelete )   {
+							 delete qNode->m_Pointer;
+							 }
+							 qNode->m_Pointer = NULL;
 
-            char*  NewLetters      = new char [ pNode->GetNumberOfBranches() - 1 ];
-            CNode**  NewPointers    = new CNode* [ pNode->GetNumberOfBranches() - 1 ];
-            int k = 0;
-                for (int j = 0; j < (int)pNode->GetNumberOfBranches(); j++)        {
-                    if ( c == pNode->m_Letters[j] ) { continue; }
-                    NewLetters[k] = pNode->m_Letters[j];
-                    NewPointers[k] = pNode->m_Pointers[j];
-                    k++;
-            }
-            assert ( k == (int)pNode->GetNumberOfBranches()-1 );
-            delete [] pNode->m_Letters;  pNode->m_Letters  = NewLetters;
-            delete [] pNode->m_Pointers; pNode->m_Pointers = NewPointers;
-            pNode->SetNumberOfBranches(k);
-      }
-      else      {
-        qNode->DoesNotExist();
-      }
-      m_Count--;
-      return true;
-    }
-    else    {
-      pNode = qNode;
-      continue;
-   }
-  }
-  assert (false);
-  return false;
-}
-*/
+							 if ( qNode->m_Letters == NULL )       {
+								 delete qNode;
+								 m_NumberOfNodes--;
+
+								 char*  NewLetters      = new char [ pNode->GetNumberOfBranches() - 1 ];
+								 CNode**  NewPointers    = new CNode* [ pNode->GetNumberOfBranches() - 1 ];
+								 int k = 0;
+								 for (int j = 0; j < (int)pNode->GetNumberOfBranches(); j++)        {
+									 if ( c == pNode->m_Letters[j] ) { continue; }
+									 NewLetters[k] = pNode->m_Letters[j];
+									 NewPointers[k] = pNode->m_Pointers[j];
+									 k++;
+									 }
+									 assert ( k == (int)pNode->GetNumberOfBranches()-1 );
+									 delete [] pNode->m_Letters;  pNode->m_Letters  = NewLetters;
+									 delete [] pNode->m_Pointers; pNode->m_Pointers = NewPointers;
+									 pNode->SetNumberOfBranches(k);
+									 }
+									 else      {
+										 qNode->DoesNotExist();
+										 }
+										 m_Count--;
+										 return true;
+										 }
+										 else    {
+											 pNode = qNode;
+											 continue;
+											 }
+											 }
+											 assert (false);
+											 return false;
+											 }
+											 */
 
 CNode* trie::SearchForPrefix(stringsurrogate  stringsurrogate, int& Result )
 {
-  CNode* pNode = NULL;
-  Result = 0;
-   pNode = m_Root->SearchForPrefix (stringsurrogate, Result );
+	CNode* pNode = NULL;
+	Result = 0;
+	pNode = m_Root->SearchForPrefix (stringsurrogate, Result );
 
-  return pNode;
+	return pNode;
 
 
 }
@@ -222,7 +221,7 @@ CNode* trie::SearchForPrefix(stringsurrogate  stringsurrogate, int& Result )
 
 CNode* trie::GetRoot1()
 {
-  return m_Root;
+	return m_Root;
 }
 
 //----------------------------------------------------------------
@@ -232,16 +231,16 @@ CNode* trie::GetRoot1()
 //    Alphabetize
 void trie::Alphabetize()
 {
-  if ( m_IsAlphabetized == false)
-  {
-    m_Root->Alphabetize();
-  }
-  m_IsAlphabetized = true;
+	if ( m_IsAlphabetized == false)
+	{
+		m_Root->Alphabetize();
+	}
+	m_IsAlphabetized = true;
 }
 
 int trie::ComputeNumberOfEntries()
 {
-  return m_Root->ComputeNumberOfEntries(0);
+	return m_Root->ComputeNumberOfEntries(0);
 }
 
 void  trie::CreateNodeArray()
@@ -261,26 +260,26 @@ void  trie::CreateNodeArray()
 // find the deepest node in the Trie whose count is more than half of m_Count
 CNode*  trie::FindLowestMajorityNode()
 {
-  CNode* pNode = m_Root->FindLowestMajorityNode( m_Count );
+	CNode* pNode = m_Root->FindLowestMajorityNode( m_Count );
 
-  if ( pNode == m_Root ) { return NULL; }
-  else
-  {
-    return pNode;
-  }
+	if ( pNode == m_Root ) { return NULL; }
+	else
+	{
+		return pNode;
+	}
 }
 
 
 
 void trie::MakeAllNodesVisible(bool Flag)
 {
-  m_Root->MakeAllVisible(Flag);
+	m_Root->MakeAllVisible(Flag);
 }
 
 
 bool trie::MakeVisible( const stringsurrogate string )
 {
-  return m_Root->MakeVisible(string);
+	return m_Root->MakeVisible(string);
 
 }
 
@@ -295,8 +294,8 @@ bool trie::MakeVisible( const stringsurrogate string )
 void trie::MakeMorphemeBoundariesAtThisWidth(int n, int MinimumStemLength)
 {
 
-  int    ThisLength = 0;
-  m_Root->MakeMorphemeBoundariesAtThisWidth(n, MinimumStemLength, ThisLength);
+	int    ThisLength = 0;
+	m_Root->MakeMorphemeBoundariesAtThisWidth(n, MinimumStemLength, ThisLength);
 
 }
 
@@ -304,114 +303,114 @@ void trie::MakeMorphemeBoundariesAtThisWidth(int n, int MinimumStemLength)
 
 
 //----------------------------------------------------------------//
-  ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------//
 /*
-void trie::MakeCutsAtMorphemeBoundary()
-{
-  int depth = 0;
-  m_Root->MakeCutsAtMorphemeBoundary( depth );
-}
-*/
+ void trie::MakeCutsAtMorphemeBoundary()
+ {
+	 int depth = 0;
+	 m_Root->MakeCutsAtMorphemeBoundary( depth );
+	 }
+	 */
 
 void trie::SetAutoDelete( bool b )
 {
-  m_AutoDelete = b;
-  m_Root->SetAutoDelete(b);
+	m_AutoDelete = b;
+	m_Root->SetAutoDelete(b);
 }
 
- 
+
 //----------------------------------------------------------------
 ////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
 //
 //      CNode
 //----------------------------------------------------------------------------
-        
+
 
 
 CNode::CNode(string s, int StartPoint, int BreakPoint)
-	: m_Key(new char[s.length()]),	// filled below
-	m_KeyLength(s.length()),
-	m_CorpusCount(0),
-	m_Pointer(),
-	m_Letters(),
-	m_NumberOfBranches(0),
-	m_Pointers(),
-	m_CountBelow(0),
-	m_Visible(false),
-	m_AutoDelete(true),	// *this owns m_Pointer
-	// public:
-	m_StartPoint(StartPoint),
-	m_BreakPoint(BreakPoint),
-	m_ExistenceFlag(false),
-	m_MorphemeBoundary(false)
+: m_Key(new char[s.length()]),	// filled below
+m_KeyLength(s.length()),
+m_CorpusCount(0),
+m_Pointer(),
+m_Letters(),
+m_NumberOfBranches(0),
+m_Pointers(),
+m_CountBelow(0),
+m_Visible(false),
+m_AutoDelete(true),	// *this owns m_Pointer
+// public:
+m_StartPoint(StartPoint),
+m_BreakPoint(BreakPoint),
+m_ExistenceFlag(false),
+m_MorphemeBoundary(false)
 { LxStrCpy(s, m_Key, s.length()); }
 
 CNode::CNode(const stringsurrogate  SS, int StartPoint, int BreakPoint)
-	: m_Key(new char[SS.GetLength()]),	// filled below
-	m_KeyLength(SS.GetLength()),
-	m_CorpusCount(0),
-	m_Pointer(),
-	m_Letters(),
-	m_NumberOfBranches(0),
-	m_Pointers(),
-	m_CountBelow(0),
-	m_Visible(false),
-	m_AutoDelete(true),	// *this owns m_Pointer
-	// public:
-	m_StartPoint(StartPoint),
-	m_BreakPoint(BreakPoint),
-	m_ExistenceFlag(false),
-	m_MorphemeBoundary(false)
+: m_Key(new char[SS.GetLength()]),	// filled below
+m_KeyLength(SS.GetLength()),
+m_CorpusCount(0),
+m_Pointer(),
+m_Letters(),
+m_NumberOfBranches(0),
+m_Pointers(),
+m_CountBelow(0),
+m_Visible(false),
+m_AutoDelete(true),	// *this owns m_Pointer
+// public:
+m_StartPoint(StartPoint),
+m_BreakPoint(BreakPoint),
+m_ExistenceFlag(false),
+m_MorphemeBoundary(false)
 { LxStrCpy(&SS, m_Key, SS.GetLength()); }
 
 CNode::CNode()
-	: m_Key(),
-	m_KeyLength(0),
-	m_CorpusCount(0),
-	m_Pointer(),
-	m_Letters(),
-	m_NumberOfBranches(0),
-	m_Pointers(),
-	m_CountBelow(0),
-	m_Visible(false),
-	m_AutoDelete(true),	// *this owns m_Pointer
-	// public:
-	m_StartPoint(0),
-	m_BreakPoint(0),
-	m_ExistenceFlag(false),
-	m_MorphemeBoundary(false) {
-		std::cout << "making a node" << std::endl;
-		m_Letters = NULL;
-		m_Pointer = NULL;
-	}
+: m_Key(),
+m_KeyLength(0),
+m_CorpusCount(0),
+m_Pointer(),
+m_Letters(),
+m_NumberOfBranches(0),
+m_Pointers(),
+m_CountBelow(0),
+m_Visible(false),
+m_AutoDelete(true),	// *this owns m_Pointer
+// public:
+m_StartPoint(0),
+m_BreakPoint(0),
+m_ExistenceFlag(false),
+m_MorphemeBoundary(false) {
+	std::cout << "making a node" << std::endl;
+	m_Letters = NULL;
+	m_Pointer = NULL;
+}
 
 CNode::~CNode()
 {
 	// Delete child nodes
- 	if (m_Letters != 0) {
+	if (m_Letters != 0) {
 		for (int i=0; i < m_NumberOfBranches; ++i)
 			delete m_Pointers[i];
 		delete[] m_Pointers;
 	}
-  
+
 	// If we own it, delete data
 	if (m_AutoDelete && m_Pointer)
 		delete m_Pointer;
 	std::cout <<"deleting a node"<<std::endl;
 	delete[] m_Key;
 	delete[] m_Letters;
- 
+
 }
 
 void CNode::SetAutoDelete( bool b )
 {
-  m_AutoDelete = b;
-  for( int i=0; m_Letters && i < m_NumberOfBranches; i++ )
-  {
-    m_Pointers[i]->SetAutoDelete(b);
-  }
+	m_AutoDelete = b;
+	for( int i=0; m_Letters && i < m_NumberOfBranches; i++ )
+	{
+		m_Pointers[i]->SetAutoDelete(b);
+	}
 }
 
 
@@ -420,7 +419,7 @@ int	CNode::CountValidSubstrings( stringsurrogate& ss )
 	int count = 0;
 
 	if( m_ExistenceFlag ) count++; 
-	
+
 	CNode* pNode = FindLetter( ss[0] );
 	if( pNode )
 	{
@@ -432,7 +431,7 @@ int	CNode::CountValidSubstrings( stringsurrogate& ss )
 	return count;
 }
 
- 
+
 //----------------------------------------------------------------//
 ////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------//
@@ -441,7 +440,7 @@ int	CNode::CountValidSubstrings( stringsurrogate& ss )
 
 
 CNode* CNode::NodeInsert(stringsurrogate& SS, int& NumberOfNodes,
-			CNode** ppNode, int* pResult)
+                         CNode** ppNode, int* pResult)
 {
 	using std::auto_ptr;
 	using std::copy;
@@ -465,7 +464,7 @@ CNode* CNode::NodeInsert(stringsurrogate& SS, int& NumberOfNodes,
 	int i = m_StartPoint;
 	for (; i < m_BreakPoint && i < SS.GetLength(); ++i) {
 		// XXX. SS and ssKey could be backwards, hence the obscure test.
-//		if ( SS[i] != ssKey[i] )
+		//		if ( SS[i] != ssKey[i] )
 		if ( LxStrCmp( &SS, ssKey.GetKey(),1,1,SS.GetStart()+i,ssKey.GetStart()+i) ) {
 			// we create a new node that dominates *this and also
 			// dominates the other new node created, new_node.
@@ -547,7 +546,7 @@ CNode* CNode::NodeInsert(stringsurrogate& SS, int& NumberOfNodes,
 			CNode* next = m_Pointers[j];
 			int result;
 			auto_ptr<CNode> new_node(next->NodeInsert(SS, NumberOfNodes,
-							ppNode, &result));
+			                                          ppNode, &result));
 			if (pResult) *pResult = result;
 			m_Pointers[j] = new_node.release();
 
@@ -601,49 +600,49 @@ CNode* CNode::NodeInsert(stringsurrogate& SS, int& NumberOfNodes,
 
 CNode** CNode::GetLink ( const stringsurrogate s )
 {
-  int i;
+	int i;
 
-  char c = s[m_BreakPoint];
-  int length = 0;
+	char c = s[m_BreakPoint];
+	int length = 0;
 
-  if (m_Letters)
-  {
-    length = m_NumberOfBranches;
-  }
-  for ( i = 0;  i < length; i++)
-  {
-    if (m_Letters[i] == c) return &m_Pointers[i];
-  }
+	if (m_Letters)
+	{
+		length = m_NumberOfBranches;
+	}
+	for ( i = 0;  i < length; i++)
+	{
+		if (m_Letters[i] == c) return &m_Pointers[i];
+	}
 
-  char* NewLetters = new char[length + 1];
-  CNode** NewPointers = new CNode*[length + 1];
-  for ( i = 0; i < length; i++)
-  {
-    NewLetters[i] = m_Letters[i];
-    NewPointers[i] = m_Pointers[i];
-  }
-  NewLetters[length] = c;
-  m_NumberOfBranches++;
-  delete m_Letters;
-  m_Letters = NewLetters;
-  delete m_Pointers;
-  m_Pointers = NewPointers;
-  m_Pointers[length] = new CNode(s, m_BreakPoint, m_BreakPoint);
-  return &m_Pointers[length];
+	char* NewLetters = new char[length + 1];
+	CNode** NewPointers = new CNode*[length + 1];
+	for ( i = 0; i < length; i++)
+	{
+		NewLetters[i] = m_Letters[i];
+		NewPointers[i] = m_Pointers[i];
+	}
+	NewLetters[length] = c;
+	m_NumberOfBranches++;
+	delete m_Letters;
+	m_Letters = NewLetters;
+	delete m_Pointers;
+	m_Pointers = NewPointers;
+	m_Pointers[length] = new CNode(s, m_BreakPoint, m_BreakPoint);
+	return &m_Pointers[length];
 }
 
 
 CNode* CNode::FindLetter (char c)
 {
 
-  int length = 0;
-  if (m_Letters) { length = m_NumberOfBranches;}
-  for (int i = 0;  i < length; i++)
-  {
-    if (m_Letters[i] == c) return m_Pointers[i];
-  }
+	int length = 0;
+	if (m_Letters) { length = m_NumberOfBranches;}
+	for (int i = 0;  i < length; i++)
+	{
+		if (m_Letters[i] == c) return m_Pointers[i];
+	}
 
-  return NULL;
+	return NULL;
 }
 
 
@@ -668,7 +667,7 @@ CNode** CNode::GetLink(CNode* pNode)
 
 	for (int i = 0;  i < length; ++i)
 		if (m_Letters[i] == c)
-			return &m_Pointers[i];
+		return &m_Pointers[i];
 
 	// XXX. should use realloc workalike
 	char* NewLetters = new char[length + 1];
@@ -686,118 +685,118 @@ CNode** CNode::GetLink(CNode* pNode)
 	++m_NumberOfBranches;
 	return &m_Pointers[length];
 }
- 
+
 
 stringsurrogate CNode::GetKey()
 {
-  return stringsurrogate(m_Key,0,m_KeyLength );
+	return stringsurrogate(m_Key,0,m_KeyLength );
 }
 
 
 void  CNode::MakeATerminalPointerArray (CNode** Array, int& Index)
 {
 
-  if (m_ExistenceFlag)
-  {
-    Array[ Index ] = this;
-    Index++;
-  }
+	if (m_ExistenceFlag)
+	{
+		Array[ Index ] = this;
+		Index++;
+	}
 
-  for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    m_Pointers[i]->MakeATerminalPointerArray(Array, Index);
-  }
+	for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		m_Pointers[i]->MakeATerminalPointerArray(Array, Index);
+	}
 
 }
 
 
 CNode* CNode::Find1(const stringsurrogate string, bool PartialOK )
 {
-  if (m_Key && LxStrCmp( &string, m_Key, string.GetLength(), m_KeyLength ) == 0 && ( PartialOK || m_ExistenceFlag ) )
-  {
-    return this;
-  }
+	if (m_Key && LxStrCmp( &string, m_Key, string.GetLength(), m_KeyLength ) == 0 && ( PartialOK || m_ExistenceFlag ) )
+	{
+		return this;
+	}
 
-  if( m_Key )
-  {
-    if( string.GetLength() < m_BreakPoint )
-    {
-      if( !PartialOK ) return NULL;
-    }
+	if( m_Key )
+	{
+		if( string.GetLength() < m_BreakPoint )
+		{
+			if( !PartialOK ) return NULL;
+		}
 
-    for( int i = m_StartPoint; i < m_BreakPoint-1; i++ )
-    {
-      if( string[i] != m_Key[i] )
-      {
-        if( PartialOK && ( i > m_StartPoint ) ) return this;
-		else return NULL;
-      }
-    }
-  }
+		for( int i = m_StartPoint; i < m_BreakPoint-1; i++ )
+		{
+			if( string[i] != m_Key[i] )
+			{
+				if( PartialOK && ( i > m_StartPoint ) ) return this;
+				else return NULL;
+			}
+		}
+	}
 
-  char c = string[m_BreakPoint];
-  for ( int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    if ( c == m_Letters[i] )
-    {
-      return m_Pointers[i] ->Find1 (string);
-    }
-  }
-  return NULL;
+	char c = string[m_BreakPoint];
+	for ( int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		if ( c == m_Letters[i] )
+		{
+			return m_Pointers[i] ->Find1 (string);
+		}
+	}
+	return NULL;
 }
 
 
 CNode* CNode::SearchForPrefix ( stringsurrogate& SS, int& Result, int Letterno )
 {
-  CNode* pNode;
-  assert ( Letterno == m_StartPoint);
-  if ( Letterno < m_BreakPoint-1)
-  {
-    for (int i = Letterno + 1; i < m_BreakPoint; i++)
-    {
-      if ( i == SS.GetLength() )
-      {
-        Result = 2;
-        return this;
-        // Prefix is inside of this node, however!
-      }
-      if ( SS[i] != m_Key[i] )
-      {
-        Result = 0;
-        return NULL;
-        // Prefix not found!
-      }
-    }
+	CNode* pNode;
+	assert ( Letterno == m_StartPoint);
+	if ( Letterno < m_BreakPoint-1)
+	{
+		for (int i = Letterno + 1; i < m_BreakPoint; i++)
+		{
+			if ( i == SS.GetLength() )
+			{
+				Result = 2;
+				return this;
+				// Prefix is inside of this node, however!
+			}
+			if ( SS[i] != m_Key[i] )
+			{
+				Result = 0;
+				return NULL;
+				// Prefix not found!
+			}
+		}
 
-  }
+	}
 
-  Letterno = m_BreakPoint;
+	Letterno = m_BreakPoint;
 
-  if ( m_Key && SS == stringsurrogate( m_Key, 0, m_KeyLength ) )
-  {
-    Result = 1;
-    return this;
-  }
+	if ( m_Key && SS == stringsurrogate( m_Key, 0, m_KeyLength ) )
+	{
+		Result = 1;
+		return this;
+	}
 
-  for (int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-      if ( SS[Letterno] == m_Letters[i] )
-      {
-        pNode = FindLetter ( SS[m_BreakPoint] );
-        pNode = pNode->SearchForPrefix ( SS, Result, m_BreakPoint);
-        return pNode;
-      }
-  }
-  Result = 0;
-  return NULL;
+	for (int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		if ( SS[Letterno] == m_Letters[i] )
+		{
+			pNode = FindLetter ( SS[m_BreakPoint] );
+			pNode = pNode->SearchForPrefix ( SS, Result, m_BreakPoint);
+			return pNode;
+		}
+	}
+	Result = 0;
+	return NULL;
 }
-  
+
 int CNode::GetWidth()
 {
-  int width = 0;
-  if (m_ExistenceFlag) { width = 1;}
+	int width = 0;
+	if (m_ExistenceFlag) { width = 1;}
 
-  if (m_Pointers) { return m_NumberOfBranches + width; } else {return width; }
+	if (m_Pointers) { return m_NumberOfBranches + width; } else {return width; }
 
 }
 
@@ -806,15 +805,15 @@ namespace {
 	// index_in<char>("Hello")(0) == 'H'.
 	template<class T> class index_in : public std::unary_function<int, T> {
 		const T* array;
-	public:
-		index_in(const T* v) : array(v) { }
-		T operator()(int i) { return array[i]; }
+		public:
+			index_in(const T* v) : array(v) { }
+			T operator()(int i) { return array[i]; }
 	};
 }
 
 void CNode::Alphabetize()
 {
- 
+
 
 	const int Length = m_NumberOfBranches;
 
@@ -842,157 +841,157 @@ void CNode::Alphabetize()
 
 void* CNode::Get_T_Pointer()
 {
-  if (m_ExistenceFlag)
-  {
-    return m_Pointer;
-  }
-  else
-  {
-    return NULL;
-  }
+	if (m_ExistenceFlag)
+	{
+		return m_Pointer;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 
 int CNode::ComputeNumberOfEntries(int count)
 {
-  if (m_ExistenceFlag)
-  {
-    count++;
-  }
+	if (m_ExistenceFlag)
+	{
+		count++;
+	}
 
-  for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    count = m_Pointers[i]->ComputeNumberOfEntries(count);
-  }
-  return count;
+	for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		count = m_Pointers[i]->ComputeNumberOfEntries(count);
+	}
+	return count;
 }
 
 
 void CNode::CreateNodeArray(CNode** NodeArray, int& Index)
 {
 
-  NodeArray[Index] = this;
-  Index++;
+	NodeArray[Index] = this;
+	Index++;
 
-  for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    m_Pointers[i]->CreateNodeArray(NodeArray, Index);
-  }
+	for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		m_Pointers[i]->CreateNodeArray(NodeArray, Index);
+	}
 
 }
- 
+
 
 CNode* CNode::FindLowestMajorityNode(int Count)
 {
-  bool  FoundFlag = false;
-  CNode*  pNode;
+	bool  FoundFlag = false;
+	CNode*  pNode;
 
 
-  for (int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    if ( m_Pointers[i]->GetCountBelow() > Count / 2 )
-    {
-      FoundFlag = true;
-      return pNode = m_Pointers[i]->FindLowestMajorityNode( Count );
-    }
+	for (int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		if ( m_Pointers[i]->GetCountBelow() > Count / 2 )
+		{
+			FoundFlag = true;
+			return pNode = m_Pointers[i]->FindLowestMajorityNode( Count );
+		}
 
-  }
+	}
 
-  if ( FoundFlag == false )
-  {
-    if (m_CountBelow > Count / 2 ) { return this; }
-    else
-    {
-      return NULL;
-    }
-  }
-  else return NULL;
+	if ( FoundFlag == false )
+	{
+		if (m_CountBelow > Count / 2 ) { return this; }
+		else
+		{
+			return NULL;
+		}
+	}
+	else return NULL;
 
 }
- 
+
 
 void CNode::MakeAllVisible(bool Flag)
 {
-  m_Visible = Flag;
-  for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    m_Pointers[i]->MakeAllVisible(Flag);
-  }
+	m_Visible = Flag;
+	for (int i = 0 ; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		m_Pointers[i]->MakeAllVisible(Flag);
+	}
 }
 
 
 bool CNode::MakeVisible( const stringsurrogate string )
 {
-  if (m_Key && LxStrCmp( &string, m_Key, string.GetLength(), m_KeyLength ) == 0 && m_ExistenceFlag)
-  {
-    m_Visible = true;
-    return true;
-  }
+	if (m_Key && LxStrCmp( &string, m_Key, string.GetLength(), m_KeyLength ) == 0 && m_ExistenceFlag)
+	{
+		m_Visible = true;
+		return true;
+	}
 
-  if (m_Key)
-  {
-    if ( string.GetLength() < m_BreakPoint )
-    {
-      return false;
-    }
-    for (int i = m_StartPoint; i < m_BreakPoint-1;i++)
-    {
-      if ( string[i] != m_Key[i] )
-      {
-        return false;
-      }
-    }
-  }
+	if (m_Key)
+	{
+		if ( string.GetLength() < m_BreakPoint )
+		{
+			return false;
+		}
+		for (int i = m_StartPoint; i < m_BreakPoint-1;i++)
+		{
+			if ( string[i] != m_Key[i] )
+			{
+				return false;
+			}
+		}
+	}
 
 
-  char c = string[m_BreakPoint];
-  for ( int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    if ( c == m_Letters[i] )
-    {
-      return m_Pointers[i] ->MakeVisible (string);
-    }
-  }
-  return false;
+	char c = string[m_BreakPoint];
+	for ( int i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		if ( c == m_Letters[i] )
+		{
+			return m_Pointers[i] ->MakeVisible (string);
+		}
+	}
+	return false;
 }
 
- 
+
 bool CNode::MakeMorphemeBoundariesAtThisWidth(int n, int MinimumStemLength, int ThisLength)
 {
-  bool val;
-  bool bLowerIsBoundary = false;
-  int   KeyLen = 0;
-  int  NumberOfBranches=0;
- 
+	bool val;
+	bool bLowerIsBoundary = false;
+	int   KeyLen = 0;
+	int  NumberOfBranches=0;
 
 
-  if ( m_Key)
-  {
-    KeyLen = GetKeyLength();
-    ThisLength = KeyLen;
- 
-  }
 
-  NumberOfBranches = GetNumberOfBranches();
+	if ( m_Key)
+	{
+		KeyLen = GetKeyLength();
+		ThisLength = KeyLen;
 
-   for (int i = 0 ; m_Letters && i < NumberOfBranches; i++)
-  {
-    val = m_Pointers[i]->MakeMorphemeBoundariesAtThisWidth(n, MinimumStemLength, ThisLength );
-    if (val) bLowerIsBoundary = true;
-  }
+	}
 
-   if ( ThisLength >= MinimumStemLength && GetWidth() >= n )
-  {
-    m_MorphemeBoundary = true;
-  }
-  else
-  {
-    m_MorphemeBoundary = false;
-  }
+	NumberOfBranches = GetNumberOfBranches();
 
-  return m_MorphemeBoundary;
+	for (int i = 0 ; m_Letters && i < NumberOfBranches; i++)
+	{
+		val = m_Pointers[i]->MakeMorphemeBoundariesAtThisWidth(n, MinimumStemLength, ThisLength );
+		if (val) bLowerIsBoundary = true;
+	}
+
+	if ( ThisLength >= MinimumStemLength && GetWidth() >= n )
+	{
+		m_MorphemeBoundary = true;
+	}
+	else
+	{
+		m_MorphemeBoundary = false;
+	}
+
+	return m_MorphemeBoundary;
 }
-  
+
 string trie::Display()
 {
 	return string( m_Root->Display( 0, m_ReverseFlag ) + "=========================" );
@@ -1000,57 +999,57 @@ string trie::Display()
 
 string CNode::Display( int tabs, bool ReverseFlag )
 {
-  string Output = " ";
-  string star = "*",
-      width = "  Width: ",
-      lt_curly = "  {",
-      rt_curly = "}",
-      below = " Count below: Update software";
-      //below += string("%1").arg(m_CountBelow);
-       
-  stringsurrogate ssKey(m_Key,0,m_KeyLength);
-  int i;
-  
+	string Output = " ";
+	string star = "*",
+	width = "  Width: ",
+	lt_curly = "  {",
+	rt_curly = "}",
+	below = " Count below: Update software";
+	//below += string("%1").arg(m_CountBelow);
+
+	stringsurrogate ssKey(m_Key,0,m_KeyLength);
+	int i;
+
 	for( i = 0; i < tabs; i++ )
 	{
 		Output.append( "__" );
 	}
 	Output.append( " " );
-	  
-  if (m_Key)
-  {
-    Output.append ( ssKey.Display() );
-    if ( ReverseFlag == true )
-    {
-      Output.append( " (" );
-      string reverse;
-      LxStrCpy_R( ssKey.Display(),reverse,ssKey.GetLength(), ssKey.GetStart() );
-      Output.append( reverse + ")" );
-    }
-  }
+
+	if (m_Key)
+	{
+		Output.append ( ssKey.Display() );
+		if ( ReverseFlag == true )
+		{
+			Output.append( " (" );
+			string reverse;
+			LxStrCpy_R( ssKey.Display(),reverse,ssKey.GetLength(), ssKey.GetStart() );
+			Output.append( reverse + ")" );
+		}
+	}
 
 
-  if (m_ExistenceFlag )
-  {
-    Output.append (star);
-  }
- 
-  if ( m_Letters )
-  {
-    Output.append (lt_curly);
-    Output.append ( stringsurrogate( m_Letters, 0, m_NumberOfBranches ).Display() );
-    Output.append (rt_curly);
-  }
+	if (m_ExistenceFlag )
+	{
+		Output.append (star);
+	}
 
- 
-  
-  Output.append ( "\n" );
+	if ( m_Letters )
+	{
+		Output.append (lt_curly);
+		Output.append ( stringsurrogate( m_Letters, 0, m_NumberOfBranches ).Display() );
+		Output.append (rt_curly);
+	}
 
-  for (i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
-  {
-    Output.append( m_Pointers[i]->Display( tabs+1, ReverseFlag ) );
-  }
-  
-  return Output;
+
+
+	Output.append ( "\n" );
+
+	for (i = 0; m_Letters && i < (int)m_NumberOfBranches; i++)
+	{
+		Output.append( m_Pointers[i]->Display( tabs+1, ReverseFlag ) );
+	}
+
+	return Output;
 }
 

@@ -1,13 +1,12 @@
-# Makefile for ansi linguistica 5.0
-
+# Makefile for ansi linguistica 5.0g
 
 CPP = g++
-#CFLAGS =  -Wall -g
+CFLAGS =  -O0 -g
 
  
  
 all:   read_to_trie.o  trie.h trie.cpp stringcollection.h stringcollection.cpp
-	${CPP} -g    read_to_trie.cpp trie.cpp  stringcollection.cpp stringsurrogate.cpp CompareFunc.cpp parse.cpp StringFunc.cpp -o ReadToTrie   
+	${CPP} ${CFLAGS}   read_to_trie.cpp trie.cpp  stringcollection.cpp stringsurrogate.cpp CompareFunc.cpp parse.cpp StringFunc.cpp -o ReadToTrie   
 
  
 #CompareFunc.o: generaldefinitions.h
